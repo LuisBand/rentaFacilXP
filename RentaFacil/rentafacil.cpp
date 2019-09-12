@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QCompleter>
 #include <QFileSystemModel>
+//Este es mi comentario de prueba
 
 RentaFacil::RentaFacil(QWidget *parent) :
     QMainWindow(parent),
