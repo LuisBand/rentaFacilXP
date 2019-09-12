@@ -10,6 +10,7 @@
 #include <QCompleter>
 #include <QFileSystemModel>
 //Este es mi comentario de prueba
+//Este es el comentario de Noe
 
 RentaFacil::RentaFacil(QWidget *parent) :
     QMainWindow(parent),
