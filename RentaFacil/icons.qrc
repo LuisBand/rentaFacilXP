@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/iconos">
+        <file>placeholder.png</file>
+        <file>add-user.png</file>
+        <file>login.png</file>
+        <file>left-arrow.png</file>
+        <file>logout.png</file>
+        <file>addhouse.png</file>
+        <file>bathtub.png</file>
+        <file>coin.png</file>
+        <file>dog.png</file>
+        <file>family-room.png</file>
+        <file>hotel.png</file>
+        <file>money.png</file>
+        <file>right-arrow.png</file>
+    </qresource>
+    <qresource prefix="/prueba"/>
+</RCC>
