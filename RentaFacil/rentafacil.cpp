@@ -63,12 +63,6 @@ RentaFacil::RentaFacil(QWidget *parent) :
     }
 
 
-
-
-
-
-
-
     QSqlQuery estados1;
     QString buscar;
     buscar="select *from Estado";
@@ -94,6 +88,19 @@ RentaFacil::RentaFacil(QWidget *parent) :
 RentaFacil::~RentaFacil()
 {
     delete ui;
+}
+void clearLayout(QLayout *layout) {
+    QLayoutItem *item;
+    while((item = layout->takeAt(0))) {
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if (item->widget()) {
+           delete item->widget();
+        }
+        delete item;
+    }
 }
 
 void RentaFacil::on_btnCreaCuenta_clicked()
@@ -477,7 +484,9 @@ void RentaFacil::on_btnAddCasa_clicked()
 
 void RentaFacil::on_btnLogoutProp_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+
+   clearLayout(ui->misCasasLayout);
+   ui->stackedWidget->setCurrentIndex(0);
 }
 //registro de casa cancelado
 void RentaFacil::on_btnCancelaRegistro_2_clicked()
@@ -692,6 +701,7 @@ void RentaFacil::on_btnRefReg_clicked()
 
 void RentaFacil::on_pushButton_2_clicked()
 {
+    currentUsuario = ui->loginNom->text();
     QString usuario = ui->loginNom->text();
     QString clave = ui->loginPass->text();
 
@@ -738,6 +748,49 @@ void RentaFacil::on_pushButton_2_clicked()
 
     }
     else if (ui->iniciarPropietarioRB->isChecked() == true) {
+        QSqlQuery catalogo;
+        QString catalogosql;
+        QString titulo;
+        int statusc;
+        catalogosql = "select titulo, statusc from Casa where nUsuarioP = '"+currentUsuario+"';";
+        catalogo.exec(catalogosql);
+        qDebug() << catalogosql;
+
+        int counterf = 0;
+        int counterc = 0;
+        while (catalogo.next()) {
+            titulo = catalogo.value(0).toString();
+            statusc = catalogo.value(1).toInt();
+
+            if(statusc == 0){
+                QPushButton *h = new QPushButton("Soy una casa");
+                ui->misCasasLayout->addWidget(h , counterf, counterc, 1, 1);
+                h->setFixedSize(203, 100);
+                h->setEnabled(false);
+                QLabel *label = new QLabel;
+                label->setText(titulo);
+                label->setFixedSize(203, 20);
+                ui->misCasasLayout->addWidget(label, counterf + 1, counterc, 1, 1);
+                counterc++;
+
+            }else if (statusc == 1) {
+                QPushButton *h = new QPushButton("Soy una casa");
+                ui->misCasasLayout->addWidget(h , counterf, counterc, 1, 1);
+                h->setFixedSize(203, 100);
+                QLabel *label = new QLabel;
+                label->setText(titulo);
+                label->setFixedSize(203, 20);
+                ui->misCasasLayout->addWidget(label, counterf + 1, counterc, 1, 1);
+                counterc++;
+            }
+
+
+            if (counterc == 3){
+                counterf= counterf + 2;
+                counterc = 0;
+            }
+        }
+
         sql = "select clave from propietario where nombreUsuario = '"+usuario+"';";
         query.exec(sql);
 
