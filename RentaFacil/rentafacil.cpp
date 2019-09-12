@@ -34,6 +34,37 @@ RentaFacil::RentaFacil(QWidget *parent) :
           qDebug()<<"Conectada ";
     }
 
+    QSqlQuery catalogo;
+    QString catalogosql;
+    QString titulo;
+
+    catalogosql = "select titulo from Casa";
+    catalogo.exec(catalogosql);
+
+    int counterf = 0;
+    int counterc = 0;
+
+    while (catalogo.next()) {
+        titulo = catalogo.value(0).toString();
+
+        QPushButton *h = new QPushButton("Soy una casa");
+        ui->layout->addWidget(h , counterf, counterc, 1, 1);
+        h->setFixedSize(203, 100);
+        QLabel *label = new QLabel;
+        label->setText(titulo);
+        label->setFixedSize(203, 20);
+        ui->layout->addWidget(label, counterf + 1, counterc, 1, 1);
+        counterc++;
+
+        if (counterc == 3){
+            counterf= counterf + 2;
+            counterc = 0;
+        }
+    }
+
+
+
+
 
 
 
@@ -311,6 +342,7 @@ void RentaFacil::on_btnRegistrarCasa_clicked()
         QSqlQuery insert2;
         insert2.prepare(iddir);
         insert2.exec();
+
         while ( insert2.next()){
         idd=insert2.value(0).toString();
         qDebug()<<idd;
@@ -319,7 +351,7 @@ void RentaFacil::on_btnRegistrarCasa_clicked()
 
         QString insertcasa;
         insertcasa="insert into Casa(numeroCuartos,numeroBanios,numeroPersonas,animales,descripcion,titulo,tarifaSemanal,tarifaDiaria,statusc,idDireccion,nUsuarioP)"
-                    " values('"+cuartos+"','"+banios+"' ,'"+personas+"' ,'"+sianimal+"' ,'"+descripcion+"' ,'"+titulo+"' ,'"+semana+"' ,'"+diario+"' ,'0' ,'"+idd+"','"+user+"' ); " ;
+                    " values("+cuartos+","+banios+" ,"+personas+" ,"+sianimal+" ,'"+descripcion+"' ,'"+titulo+"' ,'"+semana+"' ,'"+diario+"' ,'0' ,'"+idd+"','"+user+"' ); " ;
 
          qDebug()<<insertcasa;
         QSqlQuery insertcasa1;
